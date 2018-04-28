@@ -1,12 +1,50 @@
 #!/bin/bash
+## declaracion de variables para manejo de colores en pantalla
+error='\e[31m'
 color='\e[32m'
 default='\e[97m'
+
+## Declaracion de variables para almacenar informacion del sistema
 hostname=`cat /etc/hostname`
 cpu_model=`cat /proc/cpuinfo  | grep "model name" | head -n 1 | cut -d':' -f2`
 cpu_cores=`cat /proc/cpuinfo  | grep "model name"  | wc -l`
-echo -e $color
-echo "CPU Model: $cpu_model"
-echo "Hostname: $hostname"
-echo "CPU's Core: $cpu_cores"
-echo "CPU Model: $cpu_model"
-echo -e $default
+
+
+## Rutina para mostrar informacion del sistema
+imprimir() {
+ if [ -z $1 ]; then
+	echo -e $color
+	echo "CPU Model: $cpu_model"
+	echo "Hostname: $hostname"
+	echo "CPU's Core: $cpu_cores"
+	echo "CPU Model: $cpu_model"
+	echo -e $default
+ else
+	echo "CPU Model: $cpu_model" > $1
+	echo "Hostname: $hostname" >> $1
+	echo "CPU's Core: $cpu_cores" >> $1
+	echo "CPU Model: $cpu_model" >> $1
+ fi
+}
+
+
+#Verificamos si se envio un argumento
+if [ $1 ]; then
+  if [ -z $2 ]; then ## Si el usuario no indico el archivo finalizamos el proceso
+	echo -e "$error Especifique el archivo$default"
+	exit
+  else
+	if [ -f $2 ]; then # Controlamos la sobreescritura del archivo
+	  echo -n 'Desea sobre escribir el archivo (S): '
+	  read respuesta
+          if [ $respuesta = 'N' ]; then
+             exit
+	  fi
+	  # Enviamos los datos a un archivo
+	  imprimir $2
+	fi	
+  fi
+else
+ # Mostramos los datos en pantalla
+ imprimir
+fi
