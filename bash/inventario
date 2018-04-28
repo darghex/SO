@@ -1,0 +1,12 @@
+#!/bin/bash
+color='\e[32m'
+default='\e[97m'
+hostname=`cat /etc/hostname`
+cpu_model=`cat /proc/cpuinfo  | grep "model name" | head -n 1 | cut -d':' -f2`
+cpu_cores=`cat /proc/cpuinfo  | grep "model name"  | wc -l`
+echo -e $color
+echo "CPU Model: $cpu_model"
+echo "Hostname: $hostname"
+echo "CPU's Core: $cpu_cores"
+echo "CPU Model: $cpu_model"
+echo -e $default
