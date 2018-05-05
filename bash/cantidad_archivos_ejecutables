@@ -1,0 +1,27 @@
+#!/bin/bash
+## declaracion de variables para manejo de colores en pantalla
+error='\e[31m'
+color='\e[32m'
+default='\e[97m'
+directorio_actual=`pwd`
+#Verificamos si se envio un argumento
+if [ $1 ]; then
+    directorio=$1
+   if [ ! -d $directorio ]; then
+	echo -e "$error No es un directorio valido$default"
+    fi
+else
+   directorio=$directorio_actual
+fi
+cd $directorio 
+listado=`ls -R $directorio`
+carchivos=0
+for item in $listado; do
+    if [ -f $item -a -x $item ]; then
+	carchivos=$[ $carchivos + 1 ]
+    fi
+done
+echo -ne "$color"
+echo "Cantidad de archivos ejecutables: $carchivos"
+cd $directorio_actual
+echo -e "$default"
