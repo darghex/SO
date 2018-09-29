@@ -1,0 +1,11 @@
+#!/bin/bash
+# Muestra el tamaño en disco que estan ocupando los directorios
+# personales de los usuarios
+
+for usuario in `ls /home`; do
+	tamanio=`du -hd0 /home/${usuario}`
+	echo -e "El usuario \e[31m${usuario}\e[0m ocupa en disco ${tamanio}"
+done
+total=`du -hd0 /home`
+salida="tamanio total: ${total}"
+echo -e "\e[32m${salida}\e[0m"
