@@ -1,0 +1,23 @@
+#!/bin/bash
+## Obtiene informacion de un archivo enviado como argumento
+if [ -f "$1" ]; then
+	if [ -r "$1" ]; then
+		echo "Usted tiene permisos de lectura"
+	fi
+	if [ -w "$1" ]; then
+		echo "Usted tiene permisos de escritura"
+	fi
+	if [ -x "$1" ]; then
+		echo "Usted tiene permisos de ejecución"
+	fi
+	size=`du -h "$1"`
+	echo "El tamaño es de $size"
+	tmp_file=/tmp/tmp_file
+	`ls -l "$1" > $tmp_file`
+	owner=`cut -d " " -f 3 $tmp_file`
+	echo "El Propietario es $owner"
+	group=`cut -d " " -f 4 $tmp_file`
+	echo "El grupo principal es $group"
+else
+	echo "Archivo no existe"
+fi
