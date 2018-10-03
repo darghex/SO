@@ -1,0 +1,22 @@
+#!/bin/bash
+# Lista el contenido de un directorio enviado como argumento
+argumentos=$*
+command='ls'
+directorio=$PWD
+for row in ${argumentos}; do
+	if [ ${row} = '-ocultos' ]; then
+		command="${command} -a"
+	elif [ -d ${row} ]; then
+		command="${command} ${row}"
+		directorio=${row}
+	fi
+done
+resultado=`${command}`
+for item in ${resultado}; do
+	#echo "${directorio}/${item}"
+	if [ -d "${directorio}/${item}" ]; then
+		echo -e "\e[32m${item}\e[0m"
+	else
+		echo "${item}"
+	fi
+done

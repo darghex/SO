@@ -1,0 +1,6 @@
+#!/bin/bash
+for item in `ls`; do
+	if [ ${item} != "total" ]; then
+		echo `ls -l ${item}`
+	fi
+done
