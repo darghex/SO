@@ -1,0 +1,21 @@
+#!/bin/bash
+# script que permite visualizar el grupo primario y los suplementarios de un usuario
+
+if [ -z $1 ]; then
+	echo "Error. Debe especificarse un usuario como parametro"
+	exit 0;
+else
+ existe=`grep $1 /etc/passwd`
+ if [ -z "${existe}" ]; then
+	echo "El usuario $1 no existe"
+	exit 0;
+ else
+	gid=`grep $1 /etc/passwd | cut -d ":" -f 4`
+	primary=`grep ${gid} /etc/group | cut -d ":" -f 1`
+	suplementary=`grep $1 /etc/group | cut -d ":" -f 1`
+        echo "El usuario $1 pertenece a los siguientes grupos"
+	echo "Grupo Primario: ${primary}"
+	echo "Grupos Suplementarios:"
+	echo ${suplementary}
+ fi
+fi
